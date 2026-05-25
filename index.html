@@ -446,12 +446,21 @@
       form.addEventListener("submit", (event) => {
         event.preventDefault();
         const data = new FormData(form);
+        const date = data.get("date") || "Your chosen day";
+        const time = data.get("time") || "6:00 PM";
+        const place = data.get("place") || "Surprise";
+        const message = `Yes, I'll go on a date with you!\n\nDate: ${date}\nTime: ${time}\nPlace: ${place}`;
+        const smsSeparator = /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) ? "&" : "?";
+        const smsUrl = `sms:+12898879706${smsSeparator}body=${encodeURIComponent(message)}`;
 
-        document.querySelector("#final-date").textContent = data.get("date") || "Your chosen day";
-        document.querySelector("#final-time").textContent = data.get("time") || "6:00 PM";
-        document.querySelector("#final-place").textContent = data.get("place") || "Surprise";
+        document.querySelector("#final-date").textContent = date;
+        document.querySelector("#final-time").textContent = time;
+        document.querySelector("#final-place").textContent = place;
 
         showCard(finalCard);
+        setTimeout(() => {
+          window.location.href = smsUrl;
+        }, 650);
       });
     </script>
   </body>
